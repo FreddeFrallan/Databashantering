@@ -3,8 +3,14 @@ package sample;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.Data.CurrentGuides;
+import sample.Data.CurrentShows;
+import sample.Data.Guide;
 import sample.GUIManager.GuidesScene;
 import sample.GUIManager.MainMenuScene;
+import sample.GUIScenes.ShowsScene;
+
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 
@@ -12,8 +18,8 @@ public class MainSceneManager extends Application{
 
     public static MainSceneManager singleton;
 
-    private Hashtable<SceneNames, Scene> scenes = new Hashtable<SceneNames, Scene>();
-    private Scene currentScene;
+    private Hashtable<SceneNames, CustomScene> scenes = new Hashtable<SceneNames, CustomScene>();
+    private CustomScene currentScene;
     private Stage theStage;
 
     //****************** Init
@@ -24,7 +30,7 @@ public class MainSceneManager extends Application{
         theStage = primaryStage;
         theStage.setOnCloseRequest(e -> onExitApplication());
         singleton = this;
-
+        initTestData();
 
         initScenes();
         requestGotoScene(SceneNames.MainMenu);
@@ -34,17 +40,26 @@ public class MainSceneManager extends Application{
     private void initScenes() throws Exception {
         new MainMenuScene(SceneNames.MainMenu);
         new GuidesScene(SceneNames.Guides);
+        new ShowsScene(SceneNames.Show);
+    }
+
+
+    private void initTestData(){
+        CurrentGuides.insertGuide(new Guide("Fredrik Carlsson", "1", new ArrayList<>()));
+        CurrentGuides.insertGuide(new Guide("Erik Lenas", "2", new ArrayList<>()));
+        CurrentGuides.insertGuide(new Guide("Melker Mossberg", "3",new ArrayList<>()));
     }
     //**********************************
 
     //****************** Scene management
-    public void addScene(SceneNames name, Scene theScene){scenes.put(name, theScene);}
+    public void addScene(SceneNames name, CustomScene theScene){scenes.put(name, theScene);}
     public void requestGotoScene(SceneNames targetScene){ gotoScene(scenes.get(targetScene)); }
-    private void gotoScene(Scene newScene){
+    private void gotoScene(CustomScene newScene){
         if(newScene == currentScene)
             return;
         currentScene = newScene;
-        theStage.setScene(newScene);
+        newScene.refreshScene();
+        theStage.setScene(newScene.getScene());
     }
     //***********************************
 

@@ -2,6 +2,6 @@ package sample;
 
 public enum SceneNames {
     MainMenu,
-    Exebition,
+    Show,
     Guides
 }

@@ -9,9 +9,8 @@ import java.lang.reflect.Method;
 
 public class Utils {
 
-    public static int STANDARD_X_SIZE = 500;
-    public static int STANDARD_Y_SIZE = 500;
-
+    public static int WINDOW_X_SIZE = 1280/2;
+    public static int WINDOW_Y_SIZE = 720/2;
 
 
     // ********** Buttons
