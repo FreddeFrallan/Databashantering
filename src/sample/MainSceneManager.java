@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import sample.Data.CurrentGuides;
 import sample.Data.CurrentShows;
 import sample.Data.Guide;
+import sample.Database.DBConnection;
 import sample.GUIManager.GuidesScene;
 import sample.GUIManager.MainMenuScene;
 import sample.GUIScenes.ShowsScene;
@@ -32,6 +33,10 @@ public class MainSceneManager extends Application{
         singleton = this;
         initTestData();
 
+
+        DBConnection conn = new DBConnection();
+        conn.connect();
+        conn.getConn();
         initScenes();
         requestGotoScene(SceneNames.MainMenu);
         primaryStage.show();

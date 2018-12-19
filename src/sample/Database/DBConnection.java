@@ -1,3 +1,5 @@
+package sample.Database;
+
 import java.sql.*;
 
 /* This program is an example used to illustrate how JDBC works.
@@ -20,10 +22,10 @@ public class DBConnection {
     // DB connection variable
     private static Connection conn;
     // DB access variables
-    private String URL = "jdbc:mysql:///testdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private String URL = "jdbc:mysql:///konstdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String driver = "com.mysql.cj.jdbc.Driver";
     private String userID = "root";
-    private String password = "Sneriko123";
+    private String password = "";
 
     // method for establishing a DB connection
     public void connect(){
