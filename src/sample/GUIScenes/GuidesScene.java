@@ -38,7 +38,7 @@ public class GuidesScene extends CustomScene {
         GridPane.setValignment(selectedUser, VPos.TOP);
         selectedUser.setPrefWidth(300);
         selectedUser.setPrefHeight(200);
-        selectedUser.setDisable(true);
+        selectedUser.setEditable(false);
         selectedUser.setStyle("-fx-opacity: 1;");
         layout.add(selectedUser, col, row);
     }

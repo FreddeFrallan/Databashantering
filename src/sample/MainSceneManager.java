@@ -31,12 +31,6 @@ public class MainSceneManager extends Application{
         theStage = primaryStage;
         theStage.setOnCloseRequest(e -> onExitApplication());
         singleton = this;
-        initTestData();
-
-
-        DBConnection conn = new DBConnection();
-        conn.connect();
-        conn.getConn();
         initScenes();
         requestGotoScene(SceneNames.MainMenu);
         primaryStage.show();
@@ -49,11 +43,6 @@ public class MainSceneManager extends Application{
     }
 
 
-    private void initTestData(){
-        CurrentGuides.insertGuide(new Guide("Fredrik Carlsson", "1", new ArrayList<>()));
-        CurrentGuides.insertGuide(new Guide("Erik Lenas", "2", new ArrayList<>()));
-        CurrentGuides.insertGuide(new Guide("Melker Mossberg", "3",new ArrayList<>()));
-    }
     //**********************************
 
     //****************** Scene management
@@ -69,6 +58,7 @@ public class MainSceneManager extends Application{
     //***********************************
 
     private void onExitApplication(){
+        DBConnection.closeConnection();
         System.out.println("Goodbye");
     }
 }

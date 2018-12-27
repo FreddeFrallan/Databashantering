@@ -47,7 +47,7 @@ public class CreateShow{
         //Visual Objects List
         visualObjectsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         visualObjectsList.setPrefHeight(200);
-        visualObjectsList.getItems().setAll(CurrentArtObjects.tempObjects);
+        visualObjectsList.getItems().setAll(CurrentArtObjects.getAllObjects());
 
         //Create Button
         Button createBtn = Utils.createButton("Create New Show", event -> createShowPressed());
@@ -70,7 +70,7 @@ public class CreateShow{
             objects.add((ArtObject)o);
         }
 
-        CurrentShows.addNewShow(new Show(titleArea.getText(), objects));
+        //CurrentShows.addNewShow(new Show(titleArea.getText(), objects));
         window.close();
     }
 

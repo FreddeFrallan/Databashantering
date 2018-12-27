@@ -1,34 +1,22 @@
 package sample.Database;
-
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.*;
-
-/* This program is an example used to illustrate how JDBC works.
- ** It uses the JDBC driver for MySQL.
- **
- ** This program was originally written by nikos dimitrakas
- ** on 2007-08-31 for use in the basic database courses at DSV.
- **
- ** There is no error management in this program.
- ** Instead an exception is thrown. Ideally all exceptions
- ** should be caught and managed appropriately. But this
- ** program's goal is only to illustrate the basic JDBC classes.
- **
- ** Last modified by nikos on 2015-10-07
- */
-
+import java.util.ArrayList;
 
 public class DBConnection {
 
     // DB connection variable
     private static Connection conn;
     // DB access variables
-    private String URL = "jdbc:mysql:///konstdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private String driver = "com.mysql.cj.jdbc.Driver";
-    private String userID = "root";
-    private String password = "";
+    private static String URL = "jdbc:mysql:///konstdb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static String driver = "com.mysql.cj.jdbc.Driver";
+    private static String userID = "root";
+    private static String password = "";
+
 
     // method for establishing a DB connection
-    public void connect(){
+    private static void connect(){
         try{
             System.out.println("-------- Running connect() ---------");
             // register the driver with DriverManager
@@ -48,11 +36,51 @@ public class DBConnection {
 
     }
 
-    public void closeConnection() throws SQLException {
-        conn.commit();// Commit the changes made to the database through this connection.
-        conn.close();// Close the connection.
+    public static void closeConnection(){
+        if(conn == null)
+            return;
+        try {
+            conn.commit();// Commit the changes made to the database through this connection.
+            conn.close();// Close the connection.
+        }catch (Exception e){}
     }
 
 
-    public Connection getConn(){return conn;}
+    public static Connection getConn(){
+        if(conn == null)
+            connect();
+        return conn;
+    }
+
+
+    public static ArrayList executeQuery(String qString, PrepStatements prep, ResultStatement extract){
+        try {
+            ArrayList temp = new ArrayList();
+            PreparedStatement statement = DBConnection.getConn().prepareStatement(qString);
+            prep.apply(statement);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next())
+                extract.apply(result, temp);
+
+            return temp;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ArrayList();
+        }
+    }
+
+    public static void executeUpdate(String qString, PrepStatements prep){
+        try {
+            PreparedStatement statement = DBConnection.getConn().prepareStatement(qString);
+
+            System.out.println(statement.toString());
+            prep.apply(statement);
+            statement.executeUpdate();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
+

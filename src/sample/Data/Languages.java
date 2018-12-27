@@ -1,4 +1,6 @@
 package sample.Data;
+import sample.Database.DBConnection;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,11 +13,13 @@ public class Languages {
             if(languageExists(l) == false)
                 throw new MissingLanguageException(l);
     }
-    public static boolean languageExists(String language){
-        for(String l : tempLanguages)
-            if(language.toLowerCase().equals(l))
-                return true;
-        return false;
+
+    private static boolean languageExists(String name){
+        String query = "SELECT * from konstdb.språk WHERE namn = ?";
+
+        return DBConnection.executeQuery(query,
+                (s) -> {s.setString(1, name);},
+                (s, t) -> {t.add(true); }).size() > 0;
     }
 }
 

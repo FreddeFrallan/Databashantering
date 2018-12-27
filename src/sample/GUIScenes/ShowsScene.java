@@ -37,7 +37,7 @@ public class ShowsScene extends CustomScene {
         GridPane.setValignment(infoArea, VPos.TOP);
         infoArea.setPrefWidth(300);
         infoArea.setPrefHeight(200);
-        infoArea.setDisable(true);
+        infoArea.setEditable(false);
         infoArea.setStyle("-fx-opacity: 1;");
         layout.add(infoArea, col, row);
     }
@@ -70,8 +70,7 @@ public class ShowsScene extends CustomScene {
 
     @Override
     public void refreshScene() {
-        System.out.println(CurrentShows.getAllCurrentShows());
-        visualShowList.getItems().setAll(CurrentShows.getAllCurrentShows());
+        visualShowList.getItems().setAll(CurrentShows.getAllShows());
         infoArea.setText("");
     }
 

@@ -6,13 +6,16 @@ public class Guide {
 
     private ArrayList<String> languages = new ArrayList<>();
     private ArrayList<String> shows = new ArrayList<>();
-    private String name, phone, ID;
-    private Integer age = 30;
+    private String personID, name, phone, ID, mail;
 
     public Guide(){}
-    public Guide(String name, String ID, ArrayList<String> languages){
+    public Guide(String ID, String personID, String name, String phone, String mail, ArrayList<String> languages, ArrayList<String> shows){
         this.languages = languages;
+        this.personID = personID;
+        this.phone = phone;
+        this.shows = shows;
         this.name = name;
+        this.mail = mail;
         this.ID = ID;
     }
 
@@ -22,16 +25,15 @@ public class Guide {
     //How we display the Guides info in the Guide & edit Guide window
     public String getInfoString(){
         String s = "";
+        s += "ID: " + personID + "\n";
         s += "Name: " + name + "\n";
-        s += "Age: " + age + "\n";
-        if(phone != null)
-            s += "Phone: " + phone + "\n";
+        if(phone != null) s += "Phone: " + phone + "\n";
+        if(mail != null) s += "Mail: " + mail + "\n";
+
         s += "Languages:\n";
-        for(String l : languages)
-            s += "\t" + l + "\n";
+        for(String l : languages) s += "\t" + l + "\n";
         s += "Shows:\n";
-        for(String l : shows)
-            s += "\t" + l + "\n";
+        for(String l : shows) s += "\t" + l + "\n";
 
         return s;
     }
@@ -40,10 +42,14 @@ public class Guide {
 
     //*******  Getters & Setters
     public String getName(){return name;}
+    public String getPersonID(){return personID;}
     public String getID(){return ID;}
+    public String getPhone(){return phone;}
+    public String getMail(){return mail;}
 
     public void setName(String name){this.name = name;}
-    public void setAge(int age){this.age = age;}
+    public void setMail(String mail){this.mail = mail;}
+    public void setPID(String pID){this.personID = pID;}
     public void setPhone(String phone){this.phone = phone;}
     public void setLanguages(ArrayList<String> languages) throws MissingLanguageException {
         Languages.validateLanguages(languages);
@@ -55,12 +61,11 @@ public class Guide {
     }
 
     public void setNewParameters(Guide dto){
-        System.out.println("Start age" + name + ", " + age.toString());
+        /*
         if(dto.name != null)this.name = dto.name;
-        if(dto.age != null)this.age = dto.age;
         if(dto.phone != null)this.phone = dto.phone;
         if(dto.languages != null)this.languages = dto.languages;
         if(dto.shows != null)this.shows = dto.shows;
-        System.out.println("Updated params for" + name + ", " + age.toString());
+        */
     }
 }
