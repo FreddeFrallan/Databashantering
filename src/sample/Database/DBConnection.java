@@ -42,6 +42,7 @@ public class DBConnection {
         try {
             conn.commit();// Commit the changes made to the database through this connection.
             conn.close();// Close the connection.
+            conn = null;
         }catch (Exception e){}
     }
 

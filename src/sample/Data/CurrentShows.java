@@ -31,6 +31,13 @@ public class CurrentShows {
                 (s, t) -> {t.add(true); }).size() > 0;
     }
 
+    public static int getShowID(String title){
+        String query = "SELECT ID from konstdb.utställning WHERE Titel = ?";
+        return (int) DBConnection.executeQuery(query,
+                (s) -> {s.setString(1, title);},
+                (s, t) -> {t.add(s.getInt("ID")); }).get(0);
+    }
+
 
     public static void addNewShow(Show show){
     //    tempShows.add(show);

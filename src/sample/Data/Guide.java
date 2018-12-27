@@ -46,6 +46,13 @@ public class Guide {
     public String getID(){return ID;}
     public String getPhone(){return phone;}
     public String getMail(){return mail;}
+    public ArrayList<String> getLanguages(){return languages;}
+    public ArrayList<Integer> getShowIDs(){
+        ArrayList<Integer> t = new ArrayList<>();
+        for(String show : shows)
+            t.add(CurrentShows.getShowID(show));
+        return t;
+    }
 
     public void setName(String name){this.name = name;}
     public void setMail(String mail){this.mail = mail;}

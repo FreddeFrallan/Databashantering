@@ -58,7 +58,7 @@ public class MainSceneManager extends Application{
     //***********************************
 
     private void onExitApplication(){
-        DBConnection.closeConnection();
+        //DBConnection.closeConnection();
         System.out.println("Goodbye");
     }
 }

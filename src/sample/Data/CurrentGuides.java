@@ -65,6 +65,38 @@ public class CurrentGuides {
             s.setString(4, dto.getMail());
             s.setInt(5, Integer.parseInt(ID));
         }));
+
+        String delQuery = "DELETE FROM konstdb.språkkunskap WHERE GuideID = ?";
+        DBConnection.executeUpdate(delQuery, (s -> {
+            s.setInt(1, Integer.parseInt(ID));
+        }));
+
+
+        String createQuery = "INSERT konstdb.språkkunskap (GuideID, Språk)\n" +
+                "VALUES (?, ?);";
+        for(String language : dto.getLanguages()){
+            DBConnection.executeUpdate(createQuery, (s -> {
+                s.setInt(1, Integer.parseInt(ID));
+                s.setString(2, language);
+            }));
+        }
+
+        String delQuery2 = "DELETE FROM konstdb.utställningskunskap WHERE Guide = ?";
+        DBConnection.executeUpdate(delQuery2, (s -> {
+            s.setInt(1, Integer.parseInt(ID));
+        }));
+
+        
+        String createQuery2 = "INSERT konstdb.utställningskunskap (Guide, Utställning)\n" +
+                "VALUES (?, ?);";
+        for(Integer show : dto.getShowIDs()){
+            DBConnection.executeUpdate(createQuery2, (s -> {
+                s.setInt(1, Integer.parseInt(ID));
+                s.setInt(2, show);
+            }));
+        }
+
+        DBConnection.closeConnection();
     }
 
 
