@@ -10,7 +10,7 @@ public class CurrentArtObjects {
         String query = "SELECT ID, Titel FROM konstdb.konstverk";
         return DBConnection.executeQuery(query, (s) -> {},
                 (r, g) -> {g.add(new ArtObject(
-                        r.getString("ID"),
+                        r.getInt("ID"),
                         r.getString("Titel")
                 ));});
     }
@@ -21,11 +21,20 @@ public class CurrentArtObjects {
         return DBConnection.executeQuery(query,
                 (s) -> {s.setString(1, showID);},
                 (r, g) -> {g.add(new ArtObject(
-                        r.getString("ID"),
+                        r.getInt("ID"),
                         r.getString("Titel")
-
                 ));});
     }
 
+    public static void insertNewObjectsToShow(Show show, ArrayList<ArtObject> objects){
+        String query = "INSERT konstdb.utställningsobjekt (UtID, KonstID)" +
+                "VALUES (?, ?)";
+        for(ArtObject o : objects){
+            DBConnection.executeUpdate(query, (s -> {
+                s.setLong(1, show.getID());
+                s.setInt(2, o.getID());
+            } ));
+        }
+    }
 }
 

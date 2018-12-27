@@ -34,7 +34,7 @@ public class GuidesScene extends CustomScene {
         commitScene(name);
     }
 
-    private void setupLeftSection(int col, int row) throws Exception {
+    private void setupLeftSection(int col, int row) {
         GridPane.setValignment(selectedUser, VPos.TOP);
         selectedUser.setPrefWidth(300);
         selectedUser.setPrefHeight(200);

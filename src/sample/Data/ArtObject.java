@@ -2,9 +2,10 @@ package sample.Data;
 
 public class ArtObject {
 
-    private String ID, title;
+    private Integer ID;
+    private String title;
 
-    public ArtObject(String ID, String title){
+    public ArtObject(Integer ID, String title){
         this.ID = ID;
         this.title = title;
     }
@@ -12,4 +13,6 @@ public class ArtObject {
     @Override
     public String toString() {return ID + " - " + title;}
     public String infoString(){return title;}
+
+    public Integer getID(){return ID;}
 }

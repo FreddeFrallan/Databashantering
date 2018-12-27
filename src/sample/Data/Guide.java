@@ -1,15 +1,18 @@
 package sample.Data;
 
+import sample.Utils;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Guide {
 
     private ArrayList<String> languages = new ArrayList<>();
-    private ArrayList<String> shows = new ArrayList<>();
+    private ArrayList<Show> shows = new ArrayList<>();
     private String personID, name, phone, ID, mail;
 
     public Guide(){}
-    public Guide(String ID, String personID, String name, String phone, String mail, ArrayList<String> languages, ArrayList<String> shows){
+    public Guide(String ID, String personID, String name, String phone, String mail, ArrayList<String> languages, ArrayList<Show> shows){
         this.languages = languages;
         this.personID = personID;
         this.phone = phone;
@@ -22,7 +25,6 @@ public class Guide {
 
     @Override
     public String toString() {return name;}
-    //How we display the Guides info in the Guide & edit Guide window
     public String getInfoString(){
         String s = "";
         s += "ID: " + personID + "\n";
@@ -33,7 +35,7 @@ public class Guide {
         s += "Languages:\n";
         for(String l : languages) s += "\t" + l + "\n";
         s += "Shows:\n";
-        for(String l : shows) s += "\t" + l + "\n";
+        for(Show show : shows) s += "\t" + show.getTitle() + "\n";
 
         return s;
     }
@@ -47,10 +49,9 @@ public class Guide {
     public String getPhone(){return phone;}
     public String getMail(){return mail;}
     public ArrayList<String> getLanguages(){return languages;}
-    public ArrayList<Integer> getShowIDs(){
-        ArrayList<Integer> t = new ArrayList<>();
-        for(String show : shows)
-            t.add(CurrentShows.getShowID(show));
+    public ArrayList<Long> getShowIDs(){
+        ArrayList<Long> t = new ArrayList<>();
+        for(Show s : shows) t.add(s.getID());
         return t;
     }
 
@@ -58,21 +59,27 @@ public class Guide {
     public void setMail(String mail){this.mail = mail;}
     public void setPID(String pID){this.personID = pID;}
     public void setPhone(String phone){this.phone = phone;}
-    public void setLanguages(ArrayList<String> languages) throws MissingLanguageException {
+    public void setLanguages(ArrayList<String> languages) throws MissingLanguageException, DuplicateDataException {
         Languages.validateLanguages(languages);
+        if(Utils.containsDuplicates(languages))
+            throw new DuplicateDataException("Languages");
+
         this.languages = languages;
     }
-    public void setShows(ArrayList<String> shows) throws MissingShowException {
-        CurrentShows.validateShows(shows);
+    public void setShows(ArrayList<String> showTitles) throws MissingShowException, DuplicateDataException, DatabaseException {
+        CurrentShows.validateShowTitles(showTitles);
+
+        ArrayList<Show> shows = new ArrayList<>();
+        for(String s : showTitles)
+            shows.add(CurrentShows.getShowFromTitle(s));
+        if(showTitles.size() != shows.size())
+            throw new DatabaseException("Could not retreive all shows from database");
+
+        if(Utils.containsDuplicates(shows))
+            throw new DuplicateDataException("Shows");
+
         this.shows = shows;
     }
 
-    public void setNewParameters(Guide dto){
-        /*
-        if(dto.name != null)this.name = dto.name;
-        if(dto.phone != null)this.phone = dto.phone;
-        if(dto.languages != null)this.languages = dto.languages;
-        if(dto.shows != null)this.shows = dto.shows;
-        */
-    }
+
 }

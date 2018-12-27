@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Utils {
 
@@ -23,7 +25,7 @@ public class Utils {
     }
 
     //Takes a method as input that will be called
-    public static Button createButton(String text, Method method) throws Exception {
+    public static Button createButton(String text, Method method) {
         Button theButton = new Button();
         theButton.setText(text);
 
@@ -36,4 +38,14 @@ public class Utils {
         return theButton;
     }
     //************************************
+
+    public static boolean containsDuplicates(ArrayList l){
+        for(int i = 0; i < l.size(); i++)
+            for(int j = i+1; j < l.size(); j++){
+                if(l.get(i).equals(l.get(j)))
+                    return true;
+            }
+
+        return false;
+    }
 }

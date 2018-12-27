@@ -14,7 +14,7 @@ import java.util.List;
 public class CurrentGuides {
 
     private static Hashtable<String, Guide> guides = new Hashtable<>();
-    public static void removeGuide(String id){guides.remove(id);}
+
 
     public static ArrayList<Guide> getAllGuides(){
         String query = "SELECT * FROM konstdb.anställd AS anst, konstdb.guide AS guide\n" +
@@ -42,12 +42,20 @@ public class CurrentGuides {
         });
     }
 
-    private static ArrayList<String> getGuideShows(String ID){
-        String query = "SELECT Titel FROM konstdb.utställningskunskap, konstdb.utställning\n" +
+    private static ArrayList<Show> getGuideShows(String ID){
+        String query = "SELECT ID, Titel, Area, StartTid, SlutTid FROM konstdb.utställningskunskap, konstdb.utställning\n" +
                 "WHERE Utställning = ID AND Guide = ?;";
         return DBConnection.executeQuery(query,
                 (s) -> {s.setString(1, ID);},
-                (r, g) -> {g.add(r.getString("Titel"));
+                (r, g) -> {
+                    g.add(new Show(
+                            r.getInt("ID"),
+                            r.getString("Titel"),
+                            r.getBigDecimal("Area"),
+                            r.getTimestamp("StartTid"),
+                            r.getTimestamp("SlutTid"),
+                            CurrentArtObjects.getObjectsToShow(r.getString("ID"))
+                    ));
                 });
     }
 
@@ -86,19 +94,34 @@ public class CurrentGuides {
             s.setInt(1, Integer.parseInt(ID));
         }));
 
-        
+
         String createQuery2 = "INSERT konstdb.utställningskunskap (Guide, Utställning)\n" +
                 "VALUES (?, ?);";
-        for(Integer show : dto.getShowIDs()){
+        for(Long show : dto.getShowIDs()){
             DBConnection.executeUpdate(createQuery2, (s -> {
                 s.setInt(1, Integer.parseInt(ID));
-                s.setInt(2, show);
+                s.setLong(2, show);
             }));
         }
 
         DBConnection.closeConnection();
     }
 
+    public static void removeGuide(String ID){
+        String delQuery = "DELETE FROM konstdb.utställningskunskap WHERE Guide = ?";
+        DBConnection.executeUpdate(delQuery, (s -> {s.setInt(1, Integer.parseInt(ID));}));
+
+        String delQuery2 = "DELETE FROM konstdb.språkkunskap WHERE GuideID = ?";
+        DBConnection.executeUpdate(delQuery2, (s -> {s.setInt(1, Integer.parseInt(ID));}));
+
+        String delQuery3 = "DELETE FROM konstdb.guidadtur WHERE Guide = ?";
+        DBConnection.executeUpdate(delQuery2, (s -> {s.setInt(1, Integer.parseInt(ID));}));
+
+        String delQuery4 = "DELETE FROM konstdb.guide WHERE AnstID = ?";
+        DBConnection.executeUpdate(delQuery4, (s -> {s.setInt(1, Integer.parseInt(ID));}));
+
+        DBConnection.closeConnection();
+    }
 
     //Divide the given infoString into sections, then for every section we extract the appropriate data
     //Finally we update the specified guide with the new data

@@ -1,4 +1,6 @@
 package sample.Database;
+import com.mysql.cj.protocol.Resultset;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.*;
@@ -74,13 +76,26 @@ public class DBConnection {
     public static void executeUpdate(String qString, PrepStatements prep){
         try {
             PreparedStatement statement = DBConnection.getConn().prepareStatement(qString);
-
-            System.out.println(statement.toString());
             prep.apply(statement);
             statement.executeUpdate();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public static ArrayList executeUpdateWithReturnKeys(String qString, PrepStatements prep){
+        ArrayList temp = new ArrayList();
+        try {
+            PreparedStatement statement = DBConnection.getConn().prepareStatement(qString, Statement.RETURN_GENERATED_KEYS);
+            prep.apply(statement);
+            statement.executeUpdate();
+
+            var keys = statement.getGeneratedKeys();
+            while(keys.next())
+                temp.add(keys.getLong(1));
+            System.out.println("Keeys:" + temp.size());
+        }catch (Exception e){System.out.println(e.getMessage());}
+        return temp;
     }
 
 }

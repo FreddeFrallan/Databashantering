@@ -5,5 +5,5 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface ResultStatement {
-    public void apply(ResultSet dbResult, ArrayList results) throws SQLException;
+    void apply(ResultSet dbResult, ArrayList results) throws SQLException;
 }

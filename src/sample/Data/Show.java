@@ -7,12 +7,13 @@ import java.util.ArrayList;
 
 public class Show {
 
-    private String ID, title;
+    private long ID;
+    private String title;
     private BigDecimal area;
     private Timestamp startTime, endTime;
     private ArrayList<ArtObject> objects;
 
-    public Show(String ID, String title, BigDecimal area, Timestamp start, Timestamp end, ArrayList<ArtObject> objects){
+    public Show(Integer ID, String title, BigDecimal area, Timestamp start, Timestamp end, ArrayList<ArtObject> objects){
         this.ID = ID;
         this.title = title;
         this.area = area;
@@ -38,6 +39,17 @@ public class Show {
         return s;
     }
 
-
+    public long getID(){return ID;}
     public String getTitle(){return title.toLowerCase();}
+    public BigDecimal getArea(){return area;}
+    public Timestamp getStartTime(){return startTime;}
+    public Timestamp getEndTime(){return endTime;}
+
+    public void setID(long ID){this.ID = ID;}
+
+    public boolean equals(Object o){
+        if((o instanceof Show) == false)
+            return false;
+        return ((Show)o).getID() == ID;
+    }
 }

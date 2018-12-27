@@ -33,7 +33,7 @@ public class ShowsScene extends CustomScene {
         commitScene(name);
     }
 
-    private void setupLeftSection(int col, int row) throws Exception {
+    private void setupLeftSection(int col, int row) {
         GridPane.setValignment(infoArea, VPos.TOP);
         infoArea.setPrefWidth(300);
         infoArea.setPrefHeight(200);
@@ -80,7 +80,7 @@ public class ShowsScene extends CustomScene {
         ObservableList<Integer> temp = visualShowList.getSelectionModel().getSelectedIndices();
         if(temp.isEmpty() == false){
             CurrentShows.removeShow(
-                    visualShowList.getItems().get(temp.get(0))
+                    visualShowList.getItems().get(temp.get(0)).getID()
             );
             refreshScene();
         }

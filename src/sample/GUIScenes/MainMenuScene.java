@@ -16,7 +16,7 @@ import sample.Utils;
 
 public class MainMenuScene extends CustomScene {
 
-    public MainMenuScene(SceneNames name) throws Exception {
+    public MainMenuScene(SceneNames name) {
         initGUI();
         createCenterGUI();
         commitScene(name);
@@ -29,7 +29,6 @@ public class MainMenuScene extends CustomScene {
 
 
     private void createCenterGUI(){
-        System.out.println(Utils.WINDOW_Y_SIZE/10);
         Text welcomeText = new Text("Main Menu");
         welcomeText.setFont(new Font(30));
         layout.add(welcomeText, 35, 10);
